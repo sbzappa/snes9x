@@ -326,7 +326,7 @@ if test "x$enable_lua" = "xyes"; then
 	if test "x$snes9x_cv_liblua" = "xyes"; then
 		S9XLUA="S9XLUA=1"
 		S9XDEFS="$S9XDEFS -DHAVE_LUA"
-		S9XLIBS="$S9XLIBS -llua.5.1"
+		S9XLIBS="$S9XLIBS -llua5.1"
 	else
 		AC_MSG_WARN([liblua not found. Build without lua support.])
 		enable_lua="no"
