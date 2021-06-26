@@ -312,8 +312,8 @@ S9XLUA="#S9XLUA=1"
 
 AC_CACHE_VAL([snes9x_cv_liblua],
 [
-	AC_CHECK_HEADER([lua-5.1/lua.h],
-		[AC_CHECK_LIB([lua.5.1], [lua_isnumber], [snes9x_cv_liblua="yes"], [snes9x_cv_liblua="no"])],
+	AC_CHECK_HEADER([lua5.1/lua.h],
+		[AC_CHECK_LIB([lua5.1], [lua_isnumber], [snes9x_cv_liblua="yes"], [snes9x_cv_liblua="no"])],
 		[snes9x_cv_liblua="no"])
 ])
 
