@@ -60,6 +60,10 @@
 #endif
 #endif
 
+#ifdef HAVE_LUA
+#include "lua-engine.h"
+#endif
+
 typedef std::pair<std::string, std::string>	strpair_t;
 
 ConfigFile::secvec_t	keymaps;
@@ -101,6 +105,10 @@ static const char	dirNames[13][32] =
 	"log",			// LOG_DIR
 	""
 };
+
+#ifdef HAVE_LUA
+static std::vector<const char*> lua_script_filenames;
+#endif
 
 struct SUnixSettings
 {
@@ -364,6 +372,10 @@ void S9xExtraUsage (void)
 	S9xMessage(S9X_INFO, S9X_USAGE, "-rwgranularity                  Rewind granularity in frames");
 	S9xMessage(S9X_INFO, S9X_USAGE, "");
 
+#ifdef HAVE_LUA
+    S9xMessage(S9X_INFO, S9X_USAGE, "-runscript <filename>           Run specified lua script");
+#endif
+
 	S9xExtraDisplayUsage();
 }
 
@@ -479,6 +491,16 @@ void S9xParseArg (char **argv, int &i, int argc)
 			S9xUsage();
 	}
 	else
+#ifdef HAVE_LUA
+	if (!strcasecmp(argv[i], "-runscript"))
+    {
+		if (i + 1 < argc)
+			lua_script_filenames.push_back(argv[++i]);
+		else
+			S9xUsage();
+    }
+    else
+#endif
 		S9xParseDisplayArg(argv, i, argc);
 }
 
@@ -1323,6 +1345,14 @@ static bool8 ReadJoysticks (void)
 
 #endif
 
+#ifdef HAVE_LUA
+void PrintToConsole(int uniqueID, const char* str)
+{
+    printf(str);
+}
+#endif
+
+
 void S9xSamplesAvailable(void *data)
 {
 #ifndef NOSOUND
@@ -1424,6 +1454,14 @@ void S9xExit (void)
 	S9xDeinitDisplay();
 	Memory.Deinit();
 	S9xDeinitAPU();
+
+#ifdef HAVE_LUA
+    for (int i = 0; i < lua_script_filenames.size(); ++i)
+    {
+        StopLuaScript(i);
+        CloseLuaContext(i);
+    }
+#endif
 
 	exit(0);
 }
@@ -1675,6 +1713,14 @@ int main (int argc, char **argv)
 			stateMan.init(unixSettings.rewindBufferSize * 1024 * 1024);
 		}
 	}
+
+#ifdef HAVE_LUA
+    for (int i = 0; i < lua_script_filenames.size(); ++i)
+    {
+        OpenLuaContext(i, PrintToConsole, NULL, NULL);
+        RunLuaScriptFile(0, lua_script_filenames[i]);
+    }
+#endif
 
 	S9xGraphicsMode();
 

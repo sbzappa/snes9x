@@ -306,6 +306,34 @@ if test "x$enable_screenshot" = "xyes"; then
 	fi
 fi
 
+# Enable lua support through liblua.
+
+S9XLUA="#S9XLUA=1"
+
+AC_CACHE_VAL([snes9x_cv_liblua],
+[
+	AC_CHECK_HEADER([lua-5.1/lua.h],
+		[AC_CHECK_LIB([lua.5.1], [lua_isnumber], [snes9x_cv_liblua="yes"], [snes9x_cv_liblua="no"])],
+		[snes9x_cv_liblua="no"])
+])
+
+AC_ARG_ENABLE([lua],
+	[AS_HELP_STRING([--enable-lua],
+		[enable lua support through liblua (default: no)])],
+	[], [enable_lua="no"])
+
+if test "x$enable_lua" = "xyes"; then
+	if test "x$snes9x_cv_liblua" = "xyes"; then
+		S9XLUA="S9XLUA=1"
+		S9XDEFS="$S9XDEFS -DHAVE_LUA"
+		S9XLIBS="$S9XLIBS -llua.5.1"
+	else
+		AC_MSG_WARN([liblua not found. Build without lua support.])
+		enable_lua="no"
+	fi
+fi
+
+
 # Check for functions
 
 AC_CHECK_FUNC([mkstemp],
@@ -349,7 +377,7 @@ AC_CHECK_HEADERS([unistd.h sys/socket.h])
 
 if test "x$snes9x_have_stdint_h" = "x"; then
 	AC_MSG_CHECKING([whether the size of pointer is int])
-	
+
 	AC_TRY_RUN(
 	[
 		int main (void)
@@ -358,7 +386,7 @@ if test "x$snes9x_have_stdint_h" = "x"; then
 		}
 	],
 	[snes9x_ptr_is_int="yes"], [snes9x_ptr_is_int="no"])
-	
+
 	if test "x$snes9x_ptr_is_int" = "xyes"; then
 		AC_MSG_RESULT(yes)
 	else
@@ -384,7 +412,7 @@ AC_DEFUN([AC_S9X_CHECK_SAR],
 		typedef int16_t			int16;
 		typedef int32_t			int32;
 		typedef int64_t			int64;
-		#else 
+		#else
 		typedef signed char		int8;
 		typedef signed short	int16;
 		typedef signed int		int32;
@@ -512,6 +540,7 @@ AC_SUBST(S9XNETPLAY)
 AC_SUBST(S9XZIP)
 AC_SUBST(S9XJMA)
 AC_SUBST(S9X_SYSTEM_ZIP)
+AC_SUBST(S9XLUA)
 
 rm config.info 2>/dev/null
 
@@ -539,6 +568,7 @@ SSE4.1............... $enable_sse41
 AVX2................. $enable_avx2
 NEON................. $enable_neon
 debugger............. $enable_debugger
+lua support.......... $enable_lua
 
 EOF
 

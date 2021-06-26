@@ -3,6 +3,7 @@
 @S9XZIP@
 @S9XJMA@
 @S9X_SYSTEM_ZIP@
+@S9XLUA@
 
 # Fairly good and special-char-safe descriptor of the os being built on.
 OS         = `uname -s -r -m|sed \"s/ /-/g\"|tr \"[A-Z]\" \"[a-z]\"|tr \"/()\" \"___\"`
@@ -25,6 +26,11 @@ ifndef SYSTEM_ZIP
 OBJECTS   += ../unzip/ioapi.o ../unzip/unzip.o
 INCLUDES   = -I../unzip/
 endif
+endif
+
+ifdef S9XLUA
+OBJECTS   += ../lua-engine.o
+INCLUDES  += -I../macosx/lua/include
 endif
 
 ifdef S9XJMA
