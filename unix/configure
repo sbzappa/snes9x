@@ -6021,17 +6021,17 @@ then :
   printf %s "(cached) " >&6
 else $as_nop
 
-	ac_fn_cxx_check_header_compile "$LINENO" "lua-5.1/lua.h" "ac_cv_header_lua_5_1_lua_h" "$ac_includes_default"
-if test "x$ac_cv_header_lua_5_1_lua_h" = xyes
+	ac_fn_cxx_check_header_compile "$LINENO" "lua5.1/lua.h" "ac_cv_header_lua5_1_lua_h" "$ac_includes_default"
+if test "x$ac_cv_header_lua5_1_lua_h" = xyes
 then :
-  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for lua_isnumber in -llua.5.1" >&5
-printf %s "checking for lua_isnumber in -llua.5.1... " >&6; }
-if test ${ac_cv_lib_lua_5_1_lua_isnumber+y}
+  { printf "%s\n" "$as_me:${as_lineno-$LINENO}: checking for lua_isnumber in -llua5.1" >&5
+printf %s "checking for lua_isnumber in -llua5.1... " >&6; }
+if test ${ac_cv_lib_lua5_1_lua_isnumber+y}
 then :
   printf %s "(cached) " >&6
 else $as_nop
   ac_check_lib_save_LIBS=$LIBS
-LIBS="-llua.5.1  $LIBS"
+LIBS="-llua5.1  $LIBS"
 cat confdefs.h - <<_ACEOF >conftest.$ac_ext
 /* end confdefs.h.  */
 
@@ -6048,17 +6048,17 @@ return conftest::lua_isnumber ();
 _ACEOF
 if ac_fn_cxx_try_link "$LINENO"
 then :
-  ac_cv_lib_lua_5_1_lua_isnumber=yes
+  ac_cv_lib_lua5_1_lua_isnumber=yes
 else $as_nop
-  ac_cv_lib_lua_5_1_lua_isnumber=no
+  ac_cv_lib_lua5_1_lua_isnumber=no
 fi
 rm -f core conftest.err conftest.$ac_objext conftest.beam \
     conftest$ac_exeext conftest.$ac_ext
 LIBS=$ac_check_lib_save_LIBS
 fi
-{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_lua_5_1_lua_isnumber" >&5
-printf "%s\n" "$ac_cv_lib_lua_5_1_lua_isnumber" >&6; }
-if test "x$ac_cv_lib_lua_5_1_lua_isnumber" = xyes
+{ printf "%s\n" "$as_me:${as_lineno-$LINENO}: result: $ac_cv_lib_lua5_1_lua_isnumber" >&5
+printf "%s\n" "$ac_cv_lib_lua5_1_lua_isnumber" >&6; }
+if test "x$ac_cv_lib_lua5_1_lua_isnumber" = xyes
 then :
   snes9x_cv_liblua="yes"
 else $as_nop
